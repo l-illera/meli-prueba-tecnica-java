@@ -1,0 +1,28 @@
+quarkus:
+  application:
+    name: Meli Prueba Tecnica - Java
+  swagger-ui:
+    always-include: true
+mp:
+  openapi:
+    extensions:
+      smallrye:
+        info:
+          title: Meli Prueba Tecnica - API
+          version: 1.0.1
+          description: Extract secret message from Spaceship
+          contact:
+            email: luisfernando.illera@gmail.com
+            name: Luis Fernando Illera Sanmartin
+          license:
+            name: Apache 2.0
+            url: https://www.apache.org/licenses/LICENSE-2.0.html
+kenobi:
+  x: -500
+  y: -200
+skywalker:
+  x: 100
+  y: -100
+sato:
+  x: 500
+  y: 100
