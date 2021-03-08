@@ -1,64 +1,78 @@
 # prueba-tecnica project
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Este Proyecto usa Quarkus, el framework Supersonico y Subatomico para Java.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+Si desea obtener más información sobre Quarkus, visite su sitio web: https://quarkus.io/ .
 
-## Running the application in dev mode
+## Correr la aplicación en modo dev
 
-You can run your application in dev mode that enables live coding using:
+La el proyecto puede correr cómo aplicación en modo DEV, lo que habilita Live-Coding utilizando el comando:
+
 ```shell script
 ./gradlew quarkusDev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+> **_NOTA:_**  Quarkus ahora tiene incluida una interfaz de usuario Dev, que está disponible solamente en el modo dev en la URL: http://localhost:8080/q/dev/.
 
-## Packaging and running the application
+## Compilar y Ejecutar la Aplicación
 
-The application can be packaged using:
+### Localmente
+
+La aplicación puede ser compilada con el siguiente comando:
+
 ```shell script
 ./gradlew build
 ```
-It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
 
-If you want to build an _über-jar_, execute the following command:
+Esto produce el archivo `quarkus-run.jar` en el directorio `build/quarkus-app/`. al compilarse de este modo, las
+liberías quedan separadas del archivo `quarkus-run.jar` en el directorio `build/quarkus-app/lib/`.
+
+Si quiere construir un jar completo (_über-jar_), Ejecute el comando:
+
 ```shell script
 ./gradlew build -Dquarkus.package.type=uber-jar
 ```
 
-The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
+La aplicación ahora puede ser corrida desde la terminal utilizando el
+comando `java -jar build/quarkus-app/quarkus-run.jar`.
 
-## Creating a native executable
+### Google Cloud Run
 
-You can create a native executable using: 
+Compilar la aplicación con el comando:
+
 ```shell script
-./gradlew build -Dquarkus.package.type=native
+./gradlew build
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
+Inicie sesión en GCP utilizando el SDK
 ```shell script
-./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+gcloud auth login
 ```
 
-You can then execute your native executable with: `./build/prueba-tecnica-1.0.0-SNAPSHOT-runner`
+Luego, use Cloud Build para compilar la imagen del proyecto, esto subirá a un depósito de Google Cloud Storage todos los
+archivos de la aplicación (excepto las ignoradas por el archivo `.gcloudignore`).
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/gradle-tooling.
+```shell script
+gcloud builds submit --tag gcr.io/PROJECT-ID/prueba-tecnica-java
+```
 
-## Related guides
+Finalmente, se utiliza Cloud Run para iniciar la aplicación.
 
-- RESTEasy JAX-RS ([guide](https://quarkus.io/guides/rest-json)): REST endpoint framework implementing JAX-RS and more
+```shell script
+gcloud run deploy --image gcr.io/PROJECT-ID/prueba-tecnica-java --platform managed
+```
 
-## Provided examples
+## Explorar el API
 
-### RESTEasy JAX-RS example
+Este Projecto contiene una integración con OPENAPI y Swagger
 
-REST is easy peasy with this Hello World RESTEasy resource.
+### Achivo OpenApi
 
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+Para descargar el archivo openapi.yaml, haga clic en el siguiente enlace: [OpenApi.yml](https://prueba-tecnica-g6zov2ubiq-ue.a.run.app/q/openapi)
 
-### RESTEasy JSON serialisation using Jackson
+> **_NOTA:_** Para acceder a este archivo localmente, debe acceder a la ruta: http://localhost:8080/q/openapi
 
-This example demonstrate RESTEasy JSON serialisation by letting you list, add and remove quark types from a list. Quarked!
+### Swagger UI
 
-[Related guide section...](https://quarkus.io/guides/rest-json#creating-your-first-json-rest-service)
+Para explorar la documentación de los endpoints Rest disponibles con la API de Swagger UI, haga clic en el siguiente enlace [Go To Swagger-UI](https://prueba-tecnica-g6zov2ubiq-ue.a.run.app/q/swagger-ui)
+> **_NOTA:_** Para explorar el API localmente, debe acceder a la ruta: http://localhost:8080/q/swagger-ui
