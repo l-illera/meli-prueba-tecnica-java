@@ -24,7 +24,7 @@ public class MessageExtractionUseCase {
 
     private String securedExtraction(final String[] message, final int index) {
         try {
-            return msgs[index];
+            return message[index];
         } catch (IndexOutOfBoundsException ex) {
             return "";
         }
